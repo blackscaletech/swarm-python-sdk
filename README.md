@@ -1,15 +1,15 @@
 # Swarm Python SDK
 
 Dependency-free Python 3.11+ client and synchronous agent runtimes for Swarm.
-Install the `swarm-sdk` distribution and import `swarm_sdk`. This standalone
-preparation retains version **0.1.0**; it does not announce a published release.
+Install the official `swarm-sdk` distribution from PyPI and import `swarm_sdk`.
+The SDK is open source under Apache-2.0 and uses Swarm's normal API permissions.
 
 ## Quickstart
 
-Install a locally built wheel without contacting an index:
+Install the package from PyPI:
 
 ```bash
-python -m pip install --no-index --no-deps dist/swarm_sdk-0.1.0-py3-none-any.whl
+python -m pip install swarm-sdk==0.1.1
 ```
 
 Provide an authorized API origin and a least-privilege credential in the environment:
@@ -23,17 +23,21 @@ client = SwarmClient(
     token=os.environ["SWARM_TOKEN"],
 )
 try:
-    spaces = client.get("/v1/spaces")
+    spaces = client.list_spaces()
 except SwarmAPIError as error:
     print(f"Swarm request failed with status {error.status}")
 else:
-    print(spaces)
+    print(spaces.items)
 ```
 
 Use HTTPS. The SDK does not grant permissions, broaden token scope, or bypass
 approvals. Do not log tokens or sensitive response content. Mutation retries
 must reuse the original operation key and exact command; a timeout does not
 prove that an external effect did not occur.
+
+See the [PyPI package](https://pypi.org/project/swarm-sdk/) and the
+[Swarm API and SDK guide](https://swarm.services/guide/api). `list_spaces()`
+returns one `CollectionPage`; use its `next_cursor` for the next authorized page.
 
 ## Local Development
 
@@ -72,16 +76,14 @@ operation policy without reading server implementation sources. Updating that
 snapshot requires a coordinated contract review; do not bypass a mismatch.
 The wheel includes the contract and the PEP 561 `py.typed` marker.
 
-## Release Preparation
+## Releases
 
 See `CONTRIBUTING.md`, `SECURITY.md`, and `CHANGELOG.md`. CI only tests and builds.
 `publish.yml` is manual-only and requires a matching `v<version>` tag, `publish`
-set to `true`, and a protected `pypi` environment with required reviewers. Before
-enabling publication, confirm the public repository/project URLs, ownership and
-license approval, and configure PyPI Trusted Publishing for the exact repository,
-workflow filename and environment. No publisher, repository, tag or remote release
-is created by this checkout. The `publish` input defaults to `false`.
-Trusted Publishing uses job-scoped OIDC, not a saved
+set to `true`, and the tag-restricted `pypi` environment. A maintainer reviews the
+source and tag before dispatching a release. The PyPI trusted publisher is bound
+to this repository, workflow filename and environment. The `publish` input
+defaults to `false`. Trusted Publishing uses job-scoped OIDC, not a saved
 API token ([PyPI guidance](https://docs.pypi.org/trusted-publishers/using-a-publisher/)).
 
 ## Detailed Reference
@@ -419,8 +421,7 @@ caller keys and fresh `swarm-sdk-py-op` attempt keys are unchanged.
 These corrected key projections differ from older clients for affected commands.
 Retain the original explicit operation key and exact payload when recovering an
 outstanding intent across an SDK upgrade. Do not reconstruct an old uncertain
-call with a new default key: that could apply it twice. This recipe change does
-not bump the package version or constitute independently installed N-1 acceptance.
+call with a new default key: that could apply it twice.
 
 `update_task(...)` accepts `expected_updated_at`; `launch_task_run(...)` accepts
 `expected_task_updated_at`. Use the saved Task's `updated_at` to reject concurrent
@@ -574,8 +575,8 @@ method per attempt. Exact retries recover committed effects; changed content or
 an expired/reassigned attempt is refused. Do not look up a new generation to
 authorize work performed under an older claim.
 
-This API requires a coordinated server/worker cutover. These local SDK changes
-have not been published.
+This API requires server and worker support for the fenced claim contract;
+the SDK cannot supply or bypass that server-side authority.
 
 ## Connected Core Outcomes
 

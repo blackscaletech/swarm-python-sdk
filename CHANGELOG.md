@@ -1,8 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 - 2026-10-17
 
-- Prepare the standalone `swarm-sdk` distribution, retaining version 0.1.0 and
+- Publish registry installation guidance and a typed discovery quickstart.
+- Remove obsolete release-preparation claims from the public package description.
+- Preserve all runtime source and public API behavior.
+
+## 0.1.0 - 2026-10-17
+
+- Release the standalone `swarm-sdk` distribution at version 0.1.0 with
   the existing `swarm_sdk` API and runtime behavior.
 - Bundle the reviewed public client contract and Python typing marker.
 - Replace private-source test dependencies with public contract assertions.
@@ -10,5 +16,3 @@
 - Prepare pinned CI and a separately approved, manual Trusted PyPI workflow.
 - Keep publishing opt-in through a single default-false input, a matching version
   tag and the protected PyPI environment, transferring tested artifacts unchanged.
-
-No release or publication is implied by this preparation.

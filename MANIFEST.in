@@ -1,0 +1,12 @@
+include README.md LICENSE CHANGELOG.md SECURITY.md CONTRIBUTING.md
+include pyproject.toml MANIFEST.in .gitignore
+include swarm_sdk/client-contract.json swarm_sdk/py.typed
+recursive-include tests *.py
+recursive-include scripts *.py *.txt
+recursive-include .github/workflows *.yml
+prune .local-receipts
+prune .packaged-work
+prune private-handoff
+prune dist
+prune build
+global-exclude __pycache__ *.py[cod] .DS_Store

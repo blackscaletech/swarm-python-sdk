@@ -38,8 +38,8 @@ environments, private handoff material and build outputs must not be exported.
 2. Confirm the intended public repository URLs in metadata and security guidance.
 3. Run unit tests and the offline gate on every supported CI interpreter.
 4. Review the changelog, version and built distribution contents.
-5. Configure a protected `pypi` GitHub environment with required human reviewers
-   and restricted release tags. Configure the matching PyPI Trusted Publisher for
+5. Restrict the `pypi` GitHub environment to release tags and have a maintainer
+   review the source and selected tag. Configure the matching PyPI Trusted Publisher for
    `publish.yml` and that environment; do not create an API token.
 6. After separate release authorization, select the reviewed matching `v<version>`
    tag and manually dispatch `publish.yml` with `publish` set to `true`. The input

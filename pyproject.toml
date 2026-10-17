@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools==84.0.0", "wheel==0.48.0", "packaging==26.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swarm-sdk"
+version = "0.1.0"
+description = "Swarm Python SDK for agent and operator integrations."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{name = "Blackscale Technologies"}]
+keywords = ["swarm", "agents", "sdk"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/blackscaletech/swarm-python-sdk"
+Repository = "https://github.com/blackscaletech/swarm-python-sdk"
+Documentation = "https://github.com/blackscaletech/swarm-python-sdk#readme"
+Issues = "https://github.com/blackscaletech/swarm-python-sdk/issues"
+Changelog = "https://github.com/blackscaletech/swarm-python-sdk/blob/main/CHANGELOG.md"
+Security = "https://github.com/blackscaletech/swarm-python-sdk/security/policy"
+
+[tool.setuptools]
+packages = ["swarm_sdk"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+swarm_sdk = ["client-contract.json", "py.typed"]

@@ -9,7 +9,7 @@ The SDK is open source under Apache-2.0 and uses Swarm's normal API permissions.
 Install the package from PyPI:
 
 ```bash
-python -m pip install swarm-sdk==0.1.1
+python -m pip install swarm-sdk==0.1.2
 ```
 
 Provide an authorized API origin and a least-privilege credential in the environment:

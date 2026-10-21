@@ -30,7 +30,10 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Verify release source attribution
-        run: sh scripts/check-attribution.sh history HEAD
+        run: |
+          sh scripts/check-attribution.sh history HEAD
+          status="$(git status --porcelain=v1 --untracked-files=all)"
+          test -z "$status"
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
@@ -50,6 +53,10 @@ jobs:
         run: python -B scripts/test-unit.py
       - name: Build and verify distributions offline
         run: python -B scripts/test-packaged.py --dist-dir dist --evidence .local-receipts/packaged
+      - name: Verify tested release source is unchanged
+        run: |
+          status="$(git status --porcelain=v1 --untracked-files=all)"
+          test -z "$status"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: pypi-distributions

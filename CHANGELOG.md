@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 - 2026-10-20
+
+- Encode identifiers as individual path segments in typed endpoint helpers.
+- Return `False` for malformed webhook signatures, including non-ASCII input.
+- Add regression coverage without changing exported signatures, contracts or retry keys.
+
 ## 0.1.1 - 2026-10-17
 
 - Publish registry installation guidance and a typed discovery quickstart.

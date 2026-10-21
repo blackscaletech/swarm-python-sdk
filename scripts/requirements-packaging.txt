@@ -1,5 +1,5 @@
 # CI-only trusted PyPI preparation; the installed-wheel gate remains offline.
-pip==26.2.1
+pip==26.2.2
 setuptools==84.0.0
 wheel==0.48.0
 packaging==26.3

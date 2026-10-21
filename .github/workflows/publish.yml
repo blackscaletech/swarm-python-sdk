@@ -48,7 +48,7 @@ jobs:
           assert os.environ["GITHUB_REF_NAME"] == "v" + version, "Tag must exactly match package version"
           PY
       - name: Provision pinned packaging tools
-        run: python -m pip install --disable-pip-version-check -r scripts/requirements-packaging.txt
+        run: bash scripts/install-packaging-tools.sh
       - name: Unit tests (zero skips)
         run: python -B scripts/test-unit.py
       - name: Build and verify distributions offline

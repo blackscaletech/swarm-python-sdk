@@ -10,7 +10,7 @@ class IntelligenceEndpoints:
         return self.list("/v1/spaces", query=query)
 
     def get_space(self, space_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/spaces/{space_id}")
+        return self.get(f"/v1/spaces/{_path_segment(space_id)}")
 
     def ask_space(
         self,

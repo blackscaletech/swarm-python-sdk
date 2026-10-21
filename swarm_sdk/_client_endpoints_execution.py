@@ -29,13 +29,13 @@ class ExecutionEndpoints:
         return self.post("/v1/setups", input_data)
 
     def get_launch_template(self, template_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/setups/{template_id}")
+        return self.get(f"/v1/setups/{_path_segment(template_id)}")
 
     def update_launch_template(self, template_id: str, input_data: dict[str, Any]) -> dict[str, Any]:
-        return self.post(f"/v1/setups/{template_id}/update", input_data)
+        return self.post(f"/v1/setups/{_path_segment(template_id)}/update", input_data)
 
     def disable_launch_template(self, template_id: str) -> dict[str, Any]:
-        return self.post(f"/v1/setups/{template_id}/disable")
+        return self.post(f"/v1/setups/{_path_segment(template_id)}/disable")
 
     def list_automation_profiles(self, **query: Any) -> CollectionPage:
         return self.list("/v1/automation-profiles", query=query)
@@ -44,13 +44,13 @@ class ExecutionEndpoints:
         return self.post("/v1/automation-profiles", input_data)
 
     def get_automation_profile(self, profile_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/automation-profiles/{profile_id}")
+        return self.get(f"/v1/automation-profiles/{_path_segment(profile_id)}")
 
     def update_automation_profile(self, profile_id: str, input_data: dict[str, Any]) -> dict[str, Any]:
-        return self.post(f"/v1/automation-profiles/{profile_id}/update", input_data)
+        return self.post(f"/v1/automation-profiles/{_path_segment(profile_id)}/update", input_data)
 
     def disable_automation_profile(self, profile_id: str) -> dict[str, Any]:
-        return self.post(f"/v1/automation-profiles/{profile_id}/disable")
+        return self.post(f"/v1/automation-profiles/{_path_segment(profile_id)}/disable")
 
     def create_task(self, input_data: dict[str, Any], *, idempotency_key: str | None = None) -> dict[str, Any]:
         return self.post("/v1/tasks", input_data, idempotency_key=idempotency_key)
@@ -188,7 +188,7 @@ class ExecutionEndpoints:
                                    stop_event=stop_event)
 
     def list_runtime_hints(self, agent_id: str, **query: Any) -> CollectionPage:
-        return self.list(f"/v1/agents/{agent_id}/runtime-hints", query=query)
+        return self.list(f"/v1/agents/{_path_segment(agent_id)}/runtime-hints", query=query)
 
     def create_agent_capability_manifest(self, input_data: dict[str, Any]) -> dict[str, Any]:
         return self.post("/v1/agent-capability-manifests", input_data)
@@ -197,13 +197,13 @@ class ExecutionEndpoints:
         return self.list("/v1/agent-capability-manifests", query=query)
 
     def get_agent_capability_manifest(self, manifest_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/agent-capability-manifests/{manifest_id}")
+        return self.get(f"/v1/agent-capability-manifests/{_path_segment(manifest_id)}")
 
     def update_agent_capability_manifest(self, manifest_id: str, input_data: dict[str, Any]) -> dict[str, Any]:
-        return self.post(f"/v1/agent-capability-manifests/{manifest_id}/update", input_data)
+        return self.post(f"/v1/agent-capability-manifests/{_path_segment(manifest_id)}/update", input_data)
 
     def heartbeat_agent(self, agent_id: str, input_data: dict[str, Any] | None = None) -> dict[str, Any]:
-        return self.post(f"/v1/agents/{agent_id}/heartbeat", input_data or {})
+        return self.post(f"/v1/agents/{_path_segment(agent_id)}/heartbeat", input_data or {})
 
     def stream_runtime_hints(
         self,
@@ -218,7 +218,7 @@ class ExecutionEndpoints:
         stop_event: threading.Event | None = None,
         **query: Any,
     ) -> str | None:
-        url = parse.urljoin(self.base_url, f"v1/agents/{agent_id}/runtime-hints/stream")
+        url = parse.urljoin(self.base_url, f"v1/agents/{_path_segment(agent_id)}/runtime-hints/stream")
         query_string = _encode_query(query)
         if query_string:
             url = f"{url}?{query_string}"
@@ -238,7 +238,7 @@ class ExecutionEndpoints:
         return self.list("/v1/agent-presence", query=query)
 
     def get_agent_presence(self, agent_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/agents/{agent_id}/presence")
+        return self.get(f"/v1/agents/{_path_segment(agent_id)}/presence")
 
     def record_core_runner_heartbeat(self, *, idempotency_key: str | None = None) -> dict[str, Any] | None:
         return self.post("/v1/core-runner/heartbeat", {}, idempotency_key=idempotency_key)

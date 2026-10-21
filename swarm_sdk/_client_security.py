@@ -108,10 +108,13 @@ def verify_webhook_signature(
 ) -> bool:
     if signature_version != "v1":
         return False
-    if not isinstance(signature, str) or signature.strip() == "":
+    if not isinstance(signature, str):
+        return False
+    received = signature.strip()
+    if re.fullmatch(r"sha256=[0-9a-f]{64}", received) is None:
         return False
     expected = compute_webhook_signature(secret, body)
-    return hmac.compare_digest(expected, signature.strip())
+    return hmac.compare_digest(expected, received)
 
 
 def parse_webhook_headers(headers: dict[str, Any] | Any) -> dict[str, Any]:

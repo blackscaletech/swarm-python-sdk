@@ -57,13 +57,13 @@ class IdentityEndpoints:
         return self.post("/v1/auth/provider-sessions", body)
 
     def get_user_session(self, session_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/user-sessions/{session_id}")
+        return self.get(f"/v1/user-sessions/{_path_segment(session_id)}")
 
     def revoke_user_session(self, session_id: str, *, reason: str | None = None) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if reason is not None:
             body["reason"] = reason
-        return self.post(f"/v1/user-sessions/{session_id}/revoke", body)
+        return self.post(f"/v1/user-sessions/{_path_segment(session_id)}/revoke", body)
 
     def create_space(
         self,
@@ -88,7 +88,7 @@ class IdentityEndpoints:
     ) -> dict[str, Any]:
         normalized_input = _normalize_bootstrap_space_input(input_data)
         return self.post(
-            f"/v1/entities/{entity_id}/bootstrap-space",
+            f"/v1/entities/{_path_segment(entity_id)}/bootstrap-space",
             normalized_input,
             idempotency_key=idempotency_key
             or build_bootstrap_space_idempotency_key(entity_id, normalized_input, intent_key=intent_key),
@@ -106,7 +106,7 @@ class IdentityEndpoints:
             body["name"] = name
         if description is not None:
             body["description"] = description
-        return self.patch(f"/v1/spaces/{space_id}", body)
+        return self.patch(f"/v1/spaces/{_path_segment(space_id)}", body)
 
     def update_space_learning_policy(
         self,
@@ -137,7 +137,7 @@ class IdentityEndpoints:
         intent_key: str | None = None,
     ) -> dict[str, Any]:
         return self.post(
-            f"/v1/spaces/{space_id}/connect-client",
+            f"/v1/spaces/{_path_segment(space_id)}/connect-client",
             input_data or {},
             idempotency_key=idempotency_key
             or build_connect_client_idempotency_key(space_id, input_data, intent_key=intent_key),
@@ -213,4 +213,4 @@ class IdentityEndpoints:
         return self.list(f"/v1/agents/{_path_segment(agent_id)}/runtime-credentials", query=query)
 
     def get_agent(self, agent_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/agents/{agent_id}")
+        return self.get(f"/v1/agents/{_path_segment(agent_id)}")

@@ -149,7 +149,7 @@ class OperationsEndpoints:
         return self.list("/v1/budget-accounts", query=query)
 
     def get_budget_account(self, account_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/budget-accounts/{account_id}")
+        return self.get(f"/v1/budget-accounts/{_path_segment(account_id)}")
 
     def create_budget_account(self, input_data: dict[str, Any]) -> dict[str, Any]:
         return self.post("/v1/budget-accounts", input_data)
@@ -158,19 +158,19 @@ class OperationsEndpoints:
         body: dict[str, Any] = {"amount": amount}
         if reason:
             body["reason"] = reason
-        return self.post(f"/v1/budget-accounts/{account_id}/fund", body)
+        return self.post(f"/v1/budget-accounts/{_path_segment(account_id)}/fund", body)
 
     def list_budget_ledger_entries(self, **query: Any) -> CollectionPage:
         return self.list("/v1/budget-ledger-entries", query=query)
 
     def get_budget_ledger_entry(self, entry_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/budget-ledger-entries/{entry_id}")
+        return self.get(f"/v1/budget-ledger-entries/{_path_segment(entry_id)}")
 
     def list_budget_delegations(self, **query: Any) -> CollectionPage:
         return self.list("/v1/budget-delegations", query=query)
 
     def get_budget_delegation(self, delegation_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/budget-delegations/{delegation_id}")
+        return self.get(f"/v1/budget-delegations/{_path_segment(delegation_id)}")
 
     def create_budget_delegation(self, input_data: dict[str, Any]) -> dict[str, Any]:
         return self.post("/v1/budget-delegations", input_data)
@@ -179,19 +179,19 @@ class OperationsEndpoints:
         body: dict[str, Any] = {"amount": amount}
         if reason:
             body["reason"] = reason
-        return self.post(f"/v1/budget-delegations/{delegation_id}/consume", body)
+        return self.post(f"/v1/budget-delegations/{_path_segment(delegation_id)}/consume", body)
 
     def revoke_budget_delegation(self, delegation_id: str, reason: str | None = None) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if reason:
             body["reason"] = reason
-        return self.post(f"/v1/budget-delegations/{delegation_id}/revoke", body)
+        return self.post(f"/v1/budget-delegations/{_path_segment(delegation_id)}/revoke", body)
 
     def list_approval_requests(self, **query: Any) -> CollectionPage:
         return self.list("/v1/approval-requests", query=query)
 
     def get_approval_request(self, request_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/approval-requests/{request_id}")
+        return self.get(f"/v1/approval-requests/{_path_segment(request_id)}")
 
     def create_approval_request(self, input_data: dict[str, Any]) -> dict[str, Any]:
         return self.post("/v1/approval-requests", input_data)
@@ -200,13 +200,13 @@ class OperationsEndpoints:
         body: dict[str, Any] = {}
         if resolution_note:
             body["resolution_note"] = resolution_note
-        return self.post(f"/v1/approval-requests/{request_id}/approve", body)
+        return self.post(f"/v1/approval-requests/{_path_segment(request_id)}/approve", body)
 
     def reject_approval_request(self, request_id: str, resolution_note: str | None = None) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if resolution_note:
             body["resolution_note"] = resolution_note
-        return self.post(f"/v1/approval-requests/{request_id}/reject", body)
+        return self.post(f"/v1/approval-requests/{_path_segment(request_id)}/reject", body)
 
     def list_webhook_actions(self) -> list[dict[str, Any]]:
         return self.get("/v1/webhook-actions")
@@ -218,7 +218,7 @@ class OperationsEndpoints:
         return self.list("/v1/webhook-targets", query=query)
 
     def get_webhook_target(self, target_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/webhook-targets/{target_id}")
+        return self.get(f"/v1/webhook-targets/{_path_segment(target_id)}")
 
     def create_webhook_target(self, input_data: dict[str, Any]) -> dict[str, Any]:
         return self.post("/v1/webhook-targets", input_data)
@@ -234,25 +234,25 @@ class OperationsEndpoints:
         return self.create_webhook_target(request_body)
 
     def update_webhook_target(self, target_id: str, input_data: dict[str, Any]) -> dict[str, Any]:
-        return self.post(f"/v1/webhook-targets/{target_id}/update", input_data)
+        return self.post(f"/v1/webhook-targets/{_path_segment(target_id)}/update", input_data)
 
     def disable_webhook_target(self, target_id: str) -> dict[str, Any]:
-        return self.post(f"/v1/webhook-targets/{target_id}/disable")
+        return self.post(f"/v1/webhook-targets/{_path_segment(target_id)}/disable")
 
     def reconcile_webhook_target(self, target_id: str, limit: int | None = None) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if isinstance(limit, int) and limit > 0:
             body["limit"] = limit
-        return self.post(f"/v1/webhook-targets/{target_id}/reconcile", body)
+        return self.post(f"/v1/webhook-targets/{_path_segment(target_id)}/reconcile", body)
 
     def list_webhook_deliveries(self, **query: Any) -> CollectionPage:
         return self.list("/v1/webhook-deliveries", query=query)
 
     def get_webhook_delivery(self, delivery_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/webhook-deliveries/{delivery_id}")
+        return self.get(f"/v1/webhook-deliveries/{_path_segment(delivery_id)}")
 
     def redrive_webhook_delivery(self, delivery_id: str) -> dict[str, Any]:
-        return self.post(f"/v1/webhook-deliveries/{delivery_id}/redrive")
+        return self.post(f"/v1/webhook-deliveries/{_path_segment(delivery_id)}/redrive")
 
     def list_space_directory_entries(self, **query: Any) -> CollectionPage:
         return self.list("/v1/directory/spaces", query=query)
@@ -261,19 +261,19 @@ class OperationsEndpoints:
         return self.list("/v1/directory/agents", query=query)
 
     def get_space_operator_summary(self, space_id: str) -> dict[str, Any]:
-        return self.get(f"/v1/operator/spaces/{space_id}/summary")
+        return self.get(f"/v1/operator/spaces/{_path_segment(space_id)}/summary")
 
     def get_space_operator_live_snapshot(self, space_id: str, **query: Any) -> dict[str, Any]:
-        return self.get(f"/v1/operator/spaces/{space_id}/live", query=query)
+        return self.get(f"/v1/operator/spaces/{_path_segment(space_id)}/live", query=query)
 
     def get_control_plane_observability(self) -> dict[str, Any]:
         return self.get("/v1/operator/control-plane-observability")
 
     def list_space_operator_activity(self, space_id: str, **query: Any) -> CollectionPage:
-        return self.list(f"/v1/operator/spaces/{space_id}/activity", query=query)
+        return self.list(f"/v1/operator/spaces/{_path_segment(space_id)}/activity", query=query)
 
     def list_space_operator_presence_entries(self, space_id: str, **query: Any) -> CollectionPage:
-        return self.list(f"/v1/operator/spaces/{space_id}/presence", query=query)
+        return self.list(f"/v1/operator/spaces/{_path_segment(space_id)}/presence", query=query)
 
     def list_space_signed_status_entries(self, space_id: str, **query: Any) -> CollectionPage:
-        return self.list(f"/v1/operator/spaces/{space_id}/signed-status", query=query)
+        return self.list(f"/v1/operator/spaces/{_path_segment(space_id)}/signed-status", query=query)

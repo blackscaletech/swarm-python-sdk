@@ -139,9 +139,9 @@ class SwarmClientCore:
         route_limits = _match_route_limits(self.response_byte_limits, method, operation_path)
         success_limit = _response_byte_limit(max_response_bytes, route_limits.get("max_response_bytes", self.max_response_bytes), "max_response_bytes")
         error_limit = _response_byte_limit(max_error_response_bytes, route_limits.get("max_error_response_bytes", self.max_error_response_bytes), "max_error_response_bytes")
-        query_string = _encode_query(query)
-        if query_string:
-            url = f"{url}?{query_string}"
+        parsed_url = urlparse(url)
+        query_string = _encode_query(query, existing=parsed_url.query)
+        url = parsed_url._replace(query=query_string).geturl()
 
         request_effect = _normalize_request_effect(method, effect, idempotency_key)
         request_headers = dict(self.default_headers)
@@ -158,7 +158,9 @@ class SwarmClientCore:
         if request_effect == "mutation":
             if idempotency_key and idempotency_policy is not None:
                 _client_operation_key_strategy(method, operation_path, idempotency_policy)
-            key = idempotency_key or _default_mutation_idempotency_key(method, path + ("?" + query_string if query_string else ""), body,
+            # Preserve the caller's path recipe, but hash only the effective query, never a fragment.
+            key_path = path.split("#", 1)[0].split("?", 1)[0] + ("?" + query_string if query_string else "")
+            key = idempotency_key or _default_mutation_idempotency_key(method, key_path, body,
                                                                      operation_path=operation_path, explicit_strategy=idempotency_policy)
             if key:
                 request_headers["Idempotency-Key"] = key

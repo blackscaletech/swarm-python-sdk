@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+## 0.1.3 - 2026-10-24
+
+- Merge additional query parameters without corrupting existing URL queries or fragments.
+- Preserve effective-query retry identity and align duplicate query keys with the TypeScript SDK.
+
 ## 0.1.2 - 2026-10-20
 
 - Encode identifiers as individual path segments in typed endpoint helpers.

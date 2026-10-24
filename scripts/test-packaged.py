@@ -24,7 +24,7 @@ import unittest
 import zipfile
 
 TEST_FILES = ("sdk_test_support.py", "test_attempt_idempotency.py", "test_verified_artifact_content.py",
-              "test_authority_normalization.py", "test_operation_policy.py", "test_public_contract.py")
+              "test_authority_normalization.py", "test_operation_policy.py", "test_public_contract.py", "test_query_merge.py")
 ROOT_FILES = ("pyproject.toml", "MANIFEST.in", "README.md", "LICENSE", "CHANGELOG.md",
               "SECURITY.md", "CONTRIBUTING.md", ".gitignore")
 
